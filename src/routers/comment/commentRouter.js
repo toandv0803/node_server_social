@@ -9,19 +9,6 @@ router.get("/", (req, res) => {
   res.send({ status: "success", data: commentsReverse });
 });
 
-router.get("/page/total", (req, res) => {
-  const totalPage = Math.ceil(comments.length / 10);
-  res.send({ status: "success", data: totalPage });
-});
-
-router.get("/page/:id", (req, res) => {
-  const { id } = req.params;
-  const commentsReverse = [...comments];
-  commentsReverse.reverse();
-  const commentPage = commentsReverse.slice((id - 1) * 10, id * 10);
-  res.send({ status: "success", data: commentPage });
-});
-
 router.get("/:id", (req, res) => {
   const { id } = req.params;
   const comment = comments.find((item) => {
@@ -96,6 +83,26 @@ router.get("/post/:id", (req, res) => {
     return item.postId == id;
   });
   res.send({ status: "success", data: postComments.reverse() });
+});
+
+router.get("/post/:id/page/total", (req, res) => {
+  const { id } = req.params;
+  const postComments = comments.filter((item) => {
+    return item.postId == id;
+  });
+  const totalPage = Math.ceil(postComments.length / 10);
+  res.send({ status: "success", data: totalPage });
+});
+
+router.get("/post/:idPost/page/:idPage", (req, res) => {
+  const { idPost, idPage } = req.params;
+  const postComments = comments.filter((item) => {
+    return item.postId == idPost;
+  });
+  const commentsReverse = [...postComments];
+  commentsReverse.reverse();
+  const commentPage = commentsReverse.slice((idPage - 1) * 10, idPage * 10);
+  res.send({ status: "success", data: commentPage });
 });
 
 router.get("/user/:id", (req, res) => {

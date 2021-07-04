@@ -3,19 +3,6 @@ const router = express.Router();
 const messages = require("./message.json");
 const fs = require("fs");
 
-router.get("/page/total", (req, res) => {
-  const totalPage = Math.ceil(messages.length / 10);
-  res.send({ status: "success", data: totalPage });
-});
-
-router.get("/page/:id", (req, res) => {
-  const { id } = req.params;
-  const messageReveser = [...messages];
-  messageReveser.reverse();
-  const messagePage = messageReveser.slice((id - 1) * 10, id * 10);
-  res.send({ status: "success", data: messagePage });
-});
-
 router.post("/", (req, res) => {
   const { userId, roomChatId, content } = req.body;
   const time = new Date().getTime();
@@ -61,6 +48,26 @@ router.get("/room-chat/:id", (req, res) => {
     return item.roomChatId == id;
   });
   res.send({ status: "success", data: roomChatMessages.reverse() });
+});
+
+router.get("/room-chat/:id/page/total", (req, res) => {
+  const { id } = req.params;
+  const roomChatMessages = messages.filter((item) => {
+    return item.roomChatId == id;
+  });
+  const totalPage = Math.ceil(roomChatMessages.length / 10);
+  res.send({ status: "success", data: totalPage });
+});
+
+router.get("/room-chat/:idRoomChat/page/:idPage", (req, res) => {
+  const { idRoomChat, idPage } = req.params;
+  const roomChatMessages = messages.filter((item) => {
+    return item.roomChatId == idRoomChat;
+  });
+  const messageReveser = [...roomChatMessages];
+  messageReveser.reverse();
+  const messagePage = messageReveser.slice((idPage - 1) * 10, idPage * 10);
+  res.send({ status: "success", data: messagePage });
 });
 
 module.exports = router;
