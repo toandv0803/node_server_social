@@ -4,11 +4,9 @@ const comments = require("./comment.json");
 const fs = require("fs");
 
 router.get("/", (req, res) => {
-  if (comments[0].id < comments[1].id) {
-    res.send(comments.reverse());
-    comments.reverse();
-  }
-  res.send(comments);
+  const commentsReverse = [...comments];
+  commentsReverse.reverse();
+  res.send({ status: "success", data: commentsReverse });
 });
 
 router.get("/:id", (req, res) => {
@@ -17,7 +15,7 @@ router.get("/:id", (req, res) => {
     return item.id == id;
   });
   if (!comment) res.sendStatus(500);
-  res.send(comment);
+  res.send({ status: "success", data: comment });
 });
 
 router.post("/", (req, res) => {
@@ -81,18 +79,38 @@ router.delete("/:id", (req, res) => {
 
 router.get("/post/:id", (req, res) => {
   const { id } = req.params;
-  const posts = comments.filter((item) => {
+  const postComments = comments.filter((item) => {
     return item.postId == id;
   });
-  res.send(posts);
+  res.send({ status: "success", data: postComments.reverse() });
+});
+
+router.get("/post/:id/page/total", (req, res) => {
+  const { id } = req.params;
+  const postComments = comments.filter((item) => {
+    return item.postId == id;
+  });
+  const totalPage = Math.ceil(postComments.length / 10);
+  res.send({ status: "success", data: totalPage });
+});
+
+router.get("/post/:idPost/page/:idPage", (req, res) => {
+  const { idPost, idPage } = req.params;
+  const postComments = comments.filter((item) => {
+    return item.postId == idPost;
+  });
+  const commentsReverse = [...postComments];
+  commentsReverse.reverse();
+  const commentPage = commentsReverse.slice((idPage - 1) * 10, idPage * 10);
+  res.send({ status: "success", data: commentPage });
 });
 
 router.get("/user/:id", (req, res) => {
   const { id } = req.params;
-  const users = comments.filter((item) => {
+  const userComments = comments.filter((item) => {
     return item.userId == id;
   });
-  res.send(users);
+  res.send({ status: "success", data: userComments.reverse() });
 });
 
 module.exports = router;
