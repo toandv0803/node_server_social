@@ -58,4 +58,26 @@ router.post("/friend-suggest", (req, res) => {
   });
 });
 
+router.post("/search-user", (req, res) => {
+  const { textSearch } = req.body;
+  let resultSearch = [];
+  if (textSearch) {
+    users.forEach((user) => {
+      const checkingSearch =
+        user.Name.match(textSearch) || user.Email.match(textSearch);
+
+      console.log("checking", checkingSearch);
+      if (checkingSearch !== null && resultSearch.length < 5) {
+        resultSearch.push(user);
+      }
+    });
+
+    res.send({ Status: "Success", data: resultSearch });
+  } else {
+    res.send({
+      status: "textSearch is required",
+    });
+  }
+});
+
 module.exports = router;
