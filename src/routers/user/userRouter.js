@@ -65,8 +65,6 @@ router.post("/search-user", (req, res) => {
     users.forEach((user) => {
       const checkingSearch =
         user.Name.match(textSearch) || user.Email.match(textSearch);
-
-      console.log("checking", checkingSearch);
       if (checkingSearch !== null && resultSearch.length < 5) {
         resultSearch.push(user);
       }
