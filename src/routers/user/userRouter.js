@@ -7,7 +7,7 @@ const fs = require("fs");
 
 router.post("/info", (req, res) => {
   if (req.body.userId) {
-    const idx = users.findIndex((user) => user.ID === req.body.userId);
+    const idx = users.findIndex((user) => user.id === req.body.userId);
     if (idx === -1) {
       res.send({ status: "user does not exist" });
     } else
@@ -20,14 +20,14 @@ router.post("/info", (req, res) => {
 
 router.post("/update", (req, res) => {
   if (req.body.userId) {
-    const newUser = req.body;
-    const idx = users.findIndex((user) => user.ID === newUser.userId);
+    const currentUser = req.body;
+    const idx = users.findIndex((user) => user.id === currentUser.userId);
     if (idx === -1) {
       res.send({ status: "user does not exist" });
     } else {
       users[idx] = {
         ...users[idx],
-        ...newUser,
+        ...currentUser,
       };
 
       fs.writeFile(
@@ -43,8 +43,6 @@ router.post("/update", (req, res) => {
 });
 
 router.post("/friend-suggest", (req, res) => {
-  Math.floor(Math.random() * (users.length + 1));
-
   let listUserSuggest = [];
 
   for (let index = 0; index < 10; index++) {
@@ -56,6 +54,55 @@ router.post("/friend-suggest", (req, res) => {
     status: "Success",
     data: listUserSuggest,
   });
+});
+
+router.post("/search-user", (req, res) => {
+  const textSearch = req.body.textSearch;
+  const page = Math.round(req.body.page);
+  const limit = Math.round(req.body.limit);
+  let resultSearch = [];
+  if (textSearch && page && limit) {
+    users.forEach((user) => {
+      const checkingSearch =
+        user.Name.match(textSearch) || user.Email.match(textSearch);
+
+      if (checkingSearch !== null) {
+        resultSearch.push(user);
+      }
+    });
+
+    if (resultSearch.length > 0) {
+      const totalUser = resultSearch.length;
+      const totalPage = Math.ceil(resultSearch.length / limit);
+      if (page > totalPage) {
+        res.send({
+          Status: "page does not exist",
+        });
+      } else {
+        res.send({
+          Status: "Success",
+          data: {
+            totalUser,
+            totalPage,
+            currentPage: page,
+            resultSearch: resultSearch.slice(
+              page * limit - limit,
+              page * limit
+            ),
+          },
+        });
+      }
+    } else {
+      res.send({
+        Status: "Success",
+        data: { totalUser: 0, totalPage: 0, resultSearch: [] },
+      });
+    }
+  } else {
+    res.send({
+      status: "textSearch is required",
+    });
+  }
 });
 
 module.exports = router;
