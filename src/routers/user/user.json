@@ -1099,5 +1099,17 @@
     "Avatar": "http://dummyimage.com/500x500.png/ff4444/ffffff",
     "Banner": "http://dummyimage.com/1440x810.png/dddddd/000000",
     "Token": "f47d623b898d0a4a1431205e152e630bbebf9dec05335eec3922c0c7c0982a9e"
+  },
+  {
+    "id": 101,
+    "Name": "Chryste Barnhill",
+    "Email": "123456@123456.com",
+    "Password": "1",
+    "Age": 27,
+    "Gender": "Male",
+    "Address": "China",
+    "Avatar": "http://dummyimage.com/500x500.png/ff4444/ffffff",
+    "Banner": "http://dummyimage.com/1440x810.png/dddddd/000000",
+    "Token": "f47d623b898d0a4a1431205e152e630bbebf9dec05335eec3922c0c7c0982a9e"
   }
 ]
