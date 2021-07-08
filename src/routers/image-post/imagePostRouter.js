@@ -11,4 +11,12 @@ router.get("/:name", (req, res) => {
   });
 });
 
+router.get("/post/:id", (req, res) => {
+  const { id } = req.params;
+  const postImages = imagePosts.filter((item) => {
+    return item.postId == id;
+  });
+  res.send({ status: "success", data: postImages });
+});
+
 module.exports = router;
