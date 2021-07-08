@@ -6,7 +6,7 @@ const {
   get_Current_User,
   user_Disconnect,
   join_User,
-} = require("./helper/userSocket");
+} = require("./helper/socket/userSocket");
 
 const route = require("./routers");
 
@@ -37,7 +37,7 @@ io.on("connection", (socket) => {
 
     //display a welcome message to the user who have joined a room
     socket.emit("message", {
-      userId: p_user.id,
+      userId: p_user.idUser,
       username: p_user.username,
       active: true,
     });
