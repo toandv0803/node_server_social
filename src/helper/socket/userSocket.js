@@ -10,8 +10,6 @@ function join_User(idSocket, idUser, username, room) {
   return p_user;
 }
 
-console.log("user out", c_users);
-
 // Gets a particular user id to return the current user
 function get_Current_User(id) {
   return c_users.find((p_user) => p_user.idSocket === id);
