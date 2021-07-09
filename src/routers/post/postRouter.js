@@ -65,7 +65,7 @@ router.post("/", upload, (req, res) => {
     id: posts[posts.length - 1].id + 1,
     content,
     time,
-    userId,
+    userId: +userId,
   });
   fs.writeFile(
     "./src/routers/post/post.json",
@@ -129,6 +129,26 @@ router.get("/user/:id", (req, res) => {
     return item.userId == id;
   });
   res.send({ status: "success", data: userPosts.reverse() });
+});
+
+router.get("/user/:id/page/total", (req, res) => {
+  const { id } = req.params;
+  const userPosts = posts.filter((item) => {
+    return item.userId == id;
+  });
+  const totalPage = Math.ceil(userPosts.length / 10);
+  res.send({ status: "success", data: totalPage });
+});
+
+router.get("/user/:userId/page/:pageId", (req, res) => {
+  const { userId, pageId } = req.params;
+  const userPosts = posts.filter((item) => {
+    return item.userId == userId;
+  });
+  const postsReveser = [...userPosts];
+  postsReveser.reverse();
+  const postPage = postsReveser.slice((pageId - 1) * 10, pageId * 10);
+  res.send({ status: "success", data: postPage });
 });
 
 module.exports = router;

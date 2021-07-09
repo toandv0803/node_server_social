@@ -18,6 +18,19 @@ router.post("/info", (req, res) => {
   } else res.send({ status: "userId is not undefined" });
 });
 
+router.get("/token/:tokenAuth", (req, res) => {
+  if (req.params.tokenAuth) {
+    const idx = users.findIndex((user) => user.Token === req.params.tokenAuth);
+    if (idx === -1) {
+      res.send({ status: "user does not exist" });
+    } else
+      res.send({
+        status: "Success",
+        data: users[idx],
+      });
+  } else res.send({ status: "userId is not undefined" });
+});
+
 router.post("/update", (req, res) => {
   if (req.body.userId) {
     const currentUser = req.body;
