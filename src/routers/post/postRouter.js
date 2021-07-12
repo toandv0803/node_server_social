@@ -61,8 +61,9 @@ const upload = multer({ storage: storage }).any("image");
 router.post("/", upload, (req, res) => {
   const { userId, content } = req.body;
   const time = new Date().getTime();
+  const newId = posts[posts.length - 1].id + 1;
   posts.push({
-    id: posts[posts.length - 1].id + 1,
+    id: newId,
     content,
     time,
     userId: +userId,
@@ -77,7 +78,7 @@ router.post("/", upload, (req, res) => {
           if (err) {
             return res.sendStatus(500);
           }
-          res.send({ status: "success" });
+          res.send({ status: "success", idPost: newId });
         });
       }
     }
