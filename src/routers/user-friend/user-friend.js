@@ -69,16 +69,16 @@ router.get("/check-friend/:user1Id/:user2Id", (req, res) => {
   const { user1Id, user2Id } = req.params;
   var checkFriend = userFriends.find((item) => {
     return (
-      (item.user1Id == user1Id &&
-        item.user2Id == user2Id &&
-        item.status == "accepted") ||
-      (item.user2Id == user1Id &&
-        item.user1Id == user2Id &&
-        item.status == "accepted")
+      (item.user1Id == user1Id && item.user2Id == user2Id) ||
+      (item.user2Id == user1Id && item.user1Id == user2Id)
     );
   });
-  if (!checkFriend) res.send({ status: "success", isFriend: false });
-  else res.send({ status: "success", isFriend: true });
+  if (!checkFriend) res.send({ status: "success", relation: "none" });
+  if (checkFriend.status == "accepted")
+    res.send({ status: "success", relation: "friend" });
+  else if (checkFriend.status == "request" && user1Id == checkFriend.user1Id)
+    res.send({ status: "success", relation: "wait" });
+  else res.send({ status: "success", relation: "request" });
 });
 
 router.get("/friend/user/:id", (req, res) => {
