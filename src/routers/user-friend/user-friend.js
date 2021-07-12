@@ -53,7 +53,7 @@ router.put("/", (req, res) => {
   });
   if (userFriend == -1) res.sendStatus(500);
   else {
-    userFriends[userFriend].status = "accept";
+    userFriends[userFriend].status = "accepted";
     fs.writeFile(
       "./src/routers/user-friend/user-friend.json",
       JSON.stringify(userFriends),
@@ -63,6 +63,22 @@ router.put("/", (req, res) => {
       }
     );
   }
+});
+
+router.get("/check-friend/:user1Id/:user2Id", (req, res) => {
+  const { user1Id, user2Id } = req.params;
+  var checkFriend = userFriends.find((item) => {
+    return (
+      (item.user1Id == user1Id && item.user2Id == user2Id) ||
+      (item.user2Id == user1Id && item.user1Id == user2Id)
+    );
+  });
+  if (!checkFriend) res.send({ status: "success", relation: "none" });
+  if (checkFriend.status == "accepted")
+    res.send({ status: "success", relation: "friend" });
+  else if (checkFriend.status == "request" && user1Id == checkFriend.user1Id)
+    res.send({ status: "success", relation: "wait" });
+  else res.send({ status: "success", relation: "request" });
 });
 
 router.get("/friend/user/:id", (req, res) => {
@@ -83,8 +99,8 @@ router.get("/friend/user/:id", (req, res) => {
     if (user)
       return {
         id: user.id,
-        name: user.name,
-        avatar: user.avatar,
+        name: user.Name,
+        avatar: user.Avatar,
       };
   });
   res.send({ status: "success", data: friendsOfUser.reverse() });
@@ -102,8 +118,8 @@ router.get("/friend-request/user/:id", (req, res) => {
     if (user)
       return {
         id: user.id,
-        name: user.name,
-        avatar: user.avatar,
+        name: user.Name,
+        avatar: user.Avatar,
       };
   });
   res.send({ status: "success", data: friendsAddOfUser.reverse() });
@@ -121,8 +137,8 @@ router.get("/wait-accept/user/:id", (req, res) => {
     if (user)
       return {
         id: user.id,
-        name: user.name,
-        avatar: user.avatar,
+        name: user.Name,
+        avatar: user.Avatar,
       };
   });
   res.send({ status: "success", data: friendsWaitOfUser.reverse() });
