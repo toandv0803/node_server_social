@@ -65,6 +65,22 @@ router.put("/", (req, res) => {
   }
 });
 
+router.get("/check-friend/:user1Id/:user2Id", (req, res) => {
+  const { user1Id, user2Id } = req.params;
+  var checkFriend = userFriends.find((item) => {
+    return (
+      (item.user1Id == user1Id &&
+        item.user2Id == user2Id &&
+        item.status == "accepted") ||
+      (item.user2Id == user1Id &&
+        item.user1Id == user2Id &&
+        item.status == "accepted")
+    );
+  });
+  if (!checkFriend) res.send({ status: "success", isFriend: false });
+  else res.send({ status: "success", isFriend: true });
+});
+
 router.get("/friend/user/:id", (req, res) => {
   const { id } = req.params;
   var friendsOfUser = userFriends.filter((item) => {
@@ -83,8 +99,8 @@ router.get("/friend/user/:id", (req, res) => {
     if (user)
       return {
         id: user.id,
-        name: user.name,
-        avatar: user.avatar,
+        name: user.Name,
+        avatar: user.Avatar,
       };
   });
   res.send({ status: "success", data: friendsOfUser.reverse() });
@@ -102,8 +118,8 @@ router.get("/friend-request/user/:id", (req, res) => {
     if (user)
       return {
         id: user.id,
-        name: user.name,
-        avatar: user.avatar,
+        name: user.Name,
+        avatar: user.Avatar,
       };
   });
   res.send({ status: "success", data: friendsAddOfUser.reverse() });
@@ -121,8 +137,8 @@ router.get("/wait-accept/user/:id", (req, res) => {
     if (user)
       return {
         id: user.id,
-        name: user.name,
-        avatar: user.avatar,
+        name: user.Name,
+        avatar: user.Avatar,
       };
   });
   res.send({ status: "success", data: friendsWaitOfUser.reverse() });
