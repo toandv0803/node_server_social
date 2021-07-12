@@ -53,7 +53,7 @@ router.put("/", (req, res) => {
   });
   if (userFriend == -1) res.sendStatus(500);
   else {
-    userFriends[userFriend].status = "accept";
+    userFriends[userFriend].status = "accepted";
     fs.writeFile(
       "./src/routers/user-friend/user-friend.json",
       JSON.stringify(userFriends),
