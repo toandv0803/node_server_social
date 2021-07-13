@@ -7,6 +7,7 @@ const fs = require("fs");
 
 router.post("/info", (req, res) => {
   if (req.body.userId) {
+    console.log("body:::", req.body);
     const idx = users.findIndex((user) => user.id === req.body.userId);
     if (idx === -1) {
       res.send({ status: "user does not exist" });

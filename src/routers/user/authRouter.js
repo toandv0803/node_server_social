@@ -33,7 +33,7 @@ router.post("/register", (req, res) => {
     } else {
       if (password === confirmPassword) {
         const newUser = {
-          id: users[users.length - 1].ID + 1,
+          id: users[users.length - 1].id + 1,
           Name: fullName,
           Email: email,
           Password: password,
