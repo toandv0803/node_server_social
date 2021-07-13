@@ -4,6 +4,31 @@ const userRoomChats = require("./user-room-chat.json");
 const users = require("../user/user.json");
 const fs = require("fs");
 
+router.get("/user/:id", (req, res) => {
+  const { id } = req.params;
+  let roomChatsOfUser = userRoomChats.filter((item) => {
+    return item.userId == id;
+  })
+  roomChatsOfUser = roomChatsOfUser.map((item) => {
+    return item.roomChatId
+  })
+  let allRooms = [];
+  roomChatsOfUser.forEach(item => {
+    let usersOfRoom = [];
+    userRoomChats.forEach(element => {
+      if(element.roomChatId === item){
+        users.forEach(itemUser => {
+          if(itemUser.id === element.userId){
+            usersOfRoom.push(itemUser);
+          }
+        })
+      }
+    })
+    allRooms.push({roomId:item,data:usersOfRoom});
+  })
+  res.send({ status: "success", data: allRooms });
+})
+
 router.delete("/user/:userId/room-chat/:roomChatId", (req, res) => {
   const { userId, roomChatId } = req.params;
   const userRoomChat = userRoomChats.findIndex((item) => {
