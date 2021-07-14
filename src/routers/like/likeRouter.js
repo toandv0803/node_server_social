@@ -9,7 +9,7 @@ router.post("/", (req, res) => {
   const { userId, postId } = req.body;
 
   const indexLike = likes.findIndex(
-    (like) => like.User_ID === userId && like.Post_ID
+    (like) => like.User_ID === userId && like.Post_ID === postId
   );
 
   if (userId && postId) {
@@ -28,7 +28,7 @@ router.post("/", (req, res) => {
         JSON.stringify(likes),
         function writeJSON(err) {
           if (err) return console.log("lỗi", err);
-          res.send({ status: "success" });
+          res.send({ status: "success", data: newLike });
         }
       );
     } else {
@@ -39,7 +39,7 @@ router.post("/", (req, res) => {
         JSON.stringify(likes),
         function writeJSON(err) {
           if (err) return console.log("lỗi", err);
-          res.send({ status: "success" });
+          res.send({ status: "success", userId, postId });
         }
       );
     }

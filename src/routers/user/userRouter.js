@@ -7,6 +7,7 @@ const fs = require("fs");
 
 router.post("/info", (req, res) => {
   if (req.body.userId) {
+    console.log("body:::", req.body);
     const idx = users.findIndex((user) => user.id === req.body.userId);
     if (idx === -1) {
       res.send({ status: "user does not exist" });
@@ -70,6 +71,7 @@ router.post("/friend-suggest", (req, res) => {
 });
 
 router.post("/search-user", (req, res) => {
+  console.log(req.body);
   const textSearch = req.body.textSearch;
   const page = Math.round(req.body.page);
   const limit = Math.round(req.body.limit);

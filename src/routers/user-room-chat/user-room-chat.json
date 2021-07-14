@@ -1,1 +1,10 @@
-[{"roomChatId":1,"userId":2},{"roomChatId":1,"userId":3},{"roomChatId":6,"userId":1},{"roomChatId":6,"userId":2},{"roomChatId":6,"userId":3},{"roomChatId":6,"userId":4},{"roomChatId":6,"userId":5},{"roomChatId":6,"userId":6},{"roomChatId":6,"userId":7},{"roomChatId":6,"userId":8},{"roomChatId":6,"userId":9},{"roomChatId":6,"userId":10}]
+[
+    {"roomChatId":2,"userId":1},
+    {"roomChatId":3,"userId":1},
+    {"roomChatId":3,"userId":3},
+    {"roomChatId":2,"userId":2},
+    {"roomChatId":4,"userId":1},
+    {"roomChatId":4,"userId":2},
+    {"roomChatId":4,"userId":3}
+]
+

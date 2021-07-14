@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const messages = require("./message.json");
 const fs = require("fs");
+const users = require("../user/user.json");
 
 router.post("/", (req, res) => {
   const { userId, roomChatId, content } = req.body;
@@ -44,9 +45,16 @@ router.delete("/:id", (req, res) => {
 
 router.get("/room-chat/:id", (req, res) => {
   const { id } = req.params;
-  const roomChatMessages = messages.filter((item) => {
+  let roomChatMessages = messages.filter((item) => {
     return item.roomChatId == id;
   });
+  roomChatMessages.forEach(item => {
+    users.forEach(element => {
+      if(item.userId === element.id){
+        item.avatar = element.Avatar;
+      }
+    })  
+  })
   res.send({ status: "success", data: roomChatMessages.reverse() });
 });
 
