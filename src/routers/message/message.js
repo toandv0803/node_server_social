@@ -2,23 +2,33 @@ const express = require("express");
 const router = express.Router();
 const messages = require("./message.json");
 const fs = require("fs");
+const users = require("../user/user.json");
 
 router.post("/", (req, res) => {
   const { userId, roomChatId, content } = req.body;
   const time = new Date().getTime();
-  messages.push({
+  let avatar = '';
+  users.forEach(item => {
+    if(userId === item.id){
+      avatar = item.Avatar
+    }
+  })
+  console.log(avatar);
+  const newMessage = {
     id: messages[messages.length - 1].id + 1,
+    avatar:avatar,
     roomChatId,
     userId,
     content,
     time,
-  });
+  } 
+  messages.push(newMessage);
   fs.writeFile(
     "./src/routers/message/message.json",
     JSON.stringify(messages),
     function (err) {
       if (err) res.sendStatus(500);
-      else res.send({ status: "success" });
+      else res.send({ status: "success",data:newMessage });
     }
   );
 });
@@ -36,7 +46,7 @@ router.delete("/:id", (req, res) => {
       JSON.stringify(messages),
       function (err) {
         if (err) res.sendStatus(500);
-        else res.send({ status: "success" });
+        else res.send({ status: "success",data:Number(id) });
       }
     );
   }
@@ -44,9 +54,16 @@ router.delete("/:id", (req, res) => {
 
 router.get("/room-chat/:id", (req, res) => {
   const { id } = req.params;
-  const roomChatMessages = messages.filter((item) => {
+  let roomChatMessages = messages.filter((item) => {
     return item.roomChatId == id;
   });
+  roomChatMessages.forEach(item => {
+    users.forEach(element => {
+      if(item.userId === element.id){
+        item.avatar = element.Avatar;
+      }
+    })  
+  })
   res.send({ status: "success", data: roomChatMessages.reverse() });
 });
 

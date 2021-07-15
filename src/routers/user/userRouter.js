@@ -71,6 +71,7 @@ router.post("/friend-suggest", (req, res) => {
 });
 
 router.post("/search-user", (req, res) => {
+  console.log(req.body);
   const textSearch = req.body.textSearch;
   const page = Math.round(req.body.page);
   const limit = Math.round(req.body.limit);

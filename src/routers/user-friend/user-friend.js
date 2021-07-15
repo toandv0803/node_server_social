@@ -22,6 +22,7 @@ router.post("/", (req, res) => {
 });
 
 router.delete("/", (req, res) => {
+  console.log(req.body);
   const { user1Id, user2Id } = req.body;
   const userFriend = userFriends.findIndex((item) => {
     return (
@@ -101,6 +102,7 @@ router.get("/friend/user/:id", (req, res) => {
         id: user.id,
         name: user.Name,
         avatar: user.Avatar,
+        email: user.Email,
       };
   });
   res.send({ status: "success", data: friendsOfUser.reverse() });
@@ -120,6 +122,7 @@ router.get("/friend-request/user/:id", (req, res) => {
         id: user.id,
         name: user.Name,
         avatar: user.Avatar,
+        email: user.Email,
       };
   });
   res.send({ status: "success", data: friendsAddOfUser.reverse() });
@@ -139,6 +142,7 @@ router.get("/wait-accept/user/:id", (req, res) => {
         id: user.id,
         name: user.Name,
         avatar: user.Avatar,
+        email: user.Email
       };
   });
   res.send({ status: "success", data: friendsWaitOfUser.reverse() });
