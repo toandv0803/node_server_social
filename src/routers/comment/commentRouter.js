@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const comments = require("./comment.json");
+const users = require("../user/user.json");
 const fs = require("fs");
 
 router.get("/", (req, res) => {
@@ -21,19 +22,32 @@ router.get("/:id", (req, res) => {
 router.post("/", (req, res) => {
   const { userId, postId, content } = req.body;
   const time = new Date().getTime();
-  comments.push({
+  const newComment = {
     id: comments[comments.length - 1].id + 1,
     userId,
     postId,
     content,
     time,
-  });
+  };
+
+  comments.push(newComment);
   fs.writeFile(
     "./src/routers/comment/comment.json",
     JSON.stringify(comments),
     function (err) {
       if (err) res.sendStatus(500);
-      else res.send({ status: "success" });
+      else {
+        const findUser = users.filter((user) => {
+          return user.id === userId;
+        });
+
+        const { ["id"]: _, ...userComment } = findUser[0];
+
+        res.send({
+          status: "success",
+          data: { ...newComment, ...userComment },
+        });
+      }
     }
   );
 });
@@ -79,9 +93,18 @@ router.delete("/:id", (req, res) => {
 
 router.get("/post/:id", (req, res) => {
   const { id } = req.params;
-  const postComments = comments.filter((item) => {
+  const findComments = comments.filter((item) => {
     return item.postId == id;
   });
+
+  const postComments = findComments.map((comment) => {
+    const idx = users.findIndex((element) => element.id === comment.userId);
+    const { ["id"]: _, ...userComment } = users[idx];
+    userComment["userId"] = users[idx].id;
+    comment = { ...comment, ...userComment };
+    return comment;
+  });
+
   res.send({ status: "success", data: postComments.reverse() });
 });
 
@@ -96,13 +119,26 @@ router.get("/post/:id/page/total", (req, res) => {
 
 router.get("/post/:idPost/page/:idPage", (req, res) => {
   const { idPost, idPage } = req.params;
-  const postComments = comments.filter((item) => {
+  const findComments = comments.filter((item) => {
     return item.postId == idPost;
   });
+
+  const postComments = findComments.map((comment) => {
+    const idx = users.findIndex((element) => element.id === comment.userId);
+    const { ["id"]: _, ...userComment } = users[idx];
+    userComment["userId"] = users[idx].id;
+    comment = { ...comment, ...userComment };
+    return comment;
+  });
+
   const commentsReverse = [...postComments];
   commentsReverse.reverse();
   const commentPage = commentsReverse.slice((idPage - 1) * 10, idPage * 10);
-  res.send({ status: "success", data: commentPage });
+  res.send({
+    status: "success",
+    data: commentPage,
+    totalComment: postComments.length,
+  });
 });
 
 router.get("/user/:id", (req, res) => {

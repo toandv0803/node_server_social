@@ -7,19 +7,28 @@ const users = require("../user/user.json");
 router.post("/", (req, res) => {
   const { userId, roomChatId, content } = req.body;
   const time = new Date().getTime();
-  messages.push({
+  let avatar = '';
+  users.forEach(item => {
+    if(userId === item.id){
+      avatar = item.Avatar
+    }
+  })
+  console.log(avatar);
+  const newMessage = {
     id: messages[messages.length - 1].id + 1,
+    avatar:avatar,
     roomChatId,
     userId,
     content,
     time,
-  });
+  } 
+  messages.push(newMessage);
   fs.writeFile(
     "./src/routers/message/message.json",
     JSON.stringify(messages),
     function (err) {
       if (err) res.sendStatus(500);
-      else res.send({ status: "success" });
+      else res.send({ status: "success",data:newMessage });
     }
   );
 });
@@ -37,7 +46,7 @@ router.delete("/:id", (req, res) => {
       JSON.stringify(messages),
       function (err) {
         if (err) res.sendStatus(500);
-        else res.send({ status: "success" });
+        else res.send({ status: "success",data:Number(id) });
       }
     );
   }
