@@ -59,7 +59,7 @@ router.post("/update", (req, res) => {
 router.post("/friend-suggest", (req, res) => {
   let listUserSuggest = [];
 
-  for (let index = 0; index < 10; index++) {
+  for (let index = 0; index < 5; index++) {
     const indexUser = Math.floor(Math.random() * (users.length + 1));
     listUserSuggest.push(users[indexUser]);
   }
