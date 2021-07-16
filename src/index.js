@@ -28,8 +28,10 @@ const io = socket(server);
 
 //initializing the socket io connection
 io.on("connection", (socket) => {
+  console.log("New client connected" + socket.id);
   //for a new user joining the room
   socket.on("joinRoom", ({ idUser, username, roomname }) => {
+    console.log('joinRoom');
     //* create user
     const p_user = join_User(socket.id, idUser, username, roomname);
     console.log(roomname, "=id");
@@ -51,15 +53,13 @@ io.on("connection", (socket) => {
   });
 
   //user sending message
-  socket.on("chat", ({ text, roomname }) => {
+  socket.on("chat", (data) => {
+    console.log('chat');
     //gets the room user and the message sent
     const p_user = get_Current_User(socket.id);
-
     if (p_user) {
-      io.to(roomname).emit("message", {
-        userId: p_user.idUser,
-        username: p_user.username,
-        text: text,
+      socket.emit("message", {
+        data
       });
     } else {
       socket.emit("message", {
@@ -83,4 +83,15 @@ io.on("connection", (socket) => {
       });
     }
   });
+
+  socket.on('newMessage', data => {
+    console.log('data', data);
+    io.emit('getMessage', {
+      data: data
+    })
+  })
+
+  socket.on("sendDataClient", function (data) {
+    socket.emit("sendDataServer", { data })
+  })
 });

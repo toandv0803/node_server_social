@@ -26,7 +26,7 @@ router.get("/user/:id", (req, res) => {
     })
     allRooms.push({roomId:item,data:usersOfRoom});
   })
-  res.send({ status: "success", data: allRooms });
+  res.send({ status: "success", data: allRooms.reverse() });
 })
 
 router.delete("/user/:userId/room-chat/:roomChatId", (req, res) => {
