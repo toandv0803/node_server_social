@@ -1,1 +1,21 @@
-[{"user1Id":2,"user2Id":3,"status":"accepted"},{"user1Id":4,"user2Id":2,"status":"accepted"},{"user1Id":101,"user2Id":2,"status":"accepted"},{"user1Id":101,"user2Id":5,"status":"request"},{"user1Id":9,"user2Id":101,"status":"request"},{"user1Id":null,"user2Id":3,"status":"request"},{"user1Id":101,"user2Id":62,"status":"request"},{"user1Id":null,"user2Id":2,"status":"request"},{"user1Id":null,"user2Id":2,"status":"request"},{"user1Id":null,"user2Id":2,"status":"request"},{"user1Id":null,"user2Id":2,"status":"request"},{"user1Id":null,"user2Id":2,"status":"request"},{"user1Id":null,"user2Id":2,"status":"request"},{"user1Id":null,"user2Id":2,"status":"request"},{"user1Id":101,"user2Id":23,"status":"request"},{"user1Id":101,"user2Id":99,"status":"request"},{"user1Id":102,"user2Id":56,"status":"request"},{"user1Id":103,"user2Id":56,"status":"request"},{"user1Id":103,"user2Id":27,"status":"request"}]
+[
+  { "user1Id": 2, "user2Id": 3, "status": "accepted" },
+  { "user1Id": 4, "user2Id": 2, "status": "accepted" },
+  { "user1Id": 101, "user2Id": 2, "status": "accepted" },
+  { "user1Id": 101, "user2Id": 5, "status": "request" },
+  { "user1Id": 9, "user2Id": 101, "status": "request" },
+  { "user1Id": null, "user2Id": 3, "status": "request" },
+  { "user1Id": 101, "user2Id": 62, "status": "request" },
+  { "user1Id": null, "user2Id": 2, "status": "request" },
+  { "user1Id": null, "user2Id": 2, "status": "request" },
+  { "user1Id": null, "user2Id": 2, "status": "request" },
+  { "user1Id": null, "user2Id": 2, "status": "request" },
+  { "user1Id": null, "user2Id": 2, "status": "request" },
+  { "user1Id": null, "user2Id": 2, "status": "request" },
+  { "user1Id": null, "user2Id": 2, "status": "request" },
+  { "user1Id": 101, "user2Id": 23, "status": "request" },
+  { "user1Id": 101, "user2Id": 99, "status": "request" },
+  { "user1Id": 102, "user2Id": 56, "status": "request" },
+  { "user1Id": 103, "user2Id": 56, "status": "request" },
+  { "user1Id": 103, "user2Id": 27, "status": "request" }
+]
