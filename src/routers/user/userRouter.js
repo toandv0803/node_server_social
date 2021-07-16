@@ -32,16 +32,17 @@ router.get("/token/:tokenAuth", (req, res) => {
   } else res.send({ status: "userId is not undefined" });
 });
 
-router.post("/update", (req, res) => {
-  if (req.body.userId) {
-    const currentUser = req.body;
-    const idx = users.findIndex((user) => user.id === currentUser.userId);
+router.put("/:userId", (req, res) => {
+  const { userId } = req.params;
+  const { dataEdit } = req.body;
+  if (userId) {
+    const idx = users.findIndex((user) => +user.id === +userId);
     if (idx === -1) {
       res.send({ status: "user does not exist" });
     } else {
       users[idx] = {
         ...users[idx],
-        ...currentUser,
+        ...dataEdit,
       };
 
       fs.writeFile(
@@ -59,7 +60,7 @@ router.post("/update", (req, res) => {
 router.post("/friend-suggest", (req, res) => {
   let listUserSuggest = [];
 
-  for (let index = 0; index < 10; index++) {
+  for (let index = 0; index < 5; index++) {
     const indexUser = Math.floor(Math.random() * (users.length + 1));
     listUserSuggest.push(users[indexUser]);
   }
